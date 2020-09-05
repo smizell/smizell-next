@@ -1,0 +1,63 @@
+# Use cases for making things more dynamic
+
+## Why would we do this?
+
+### We want reusability
+
+We add keywords like `$ref` to specifications to help people make things reusable. We want to define once and reuse all over.
+
+### We want variables for different contexts
+
+Sometimes we want to generate one API definition for our internal teams and another for outside vendors. Other times we might want to generate one for staging and one for production.
+
+```yaml:geneva-context
+show:
+  scope: true
+  definition: true
+  result: true
+scope:
+  name: "Stephen Mizell"
+definition:
+  greeting:
+    fn:template: |
+      Hello, {{name}}
+```
+
+### We want to compose files together
+
+Left untended, YAML documents grow in complexity and size. It's not easy to read or edit a 10,000 line YAML document. The next step is to break files like this into multiple files.
+
+```yaml:geneva-context
+show:
+  files: true
+  definition: true
+  result: true
+files:
+  infoFile: |
+    contact:
+      name: API Support
+      url: http://www.example.com/support
+      email: support@example.com
+definition:
+  openapi: 3.0.0
+  info:
+    fn:include: "infoFile"
+```
+
+### We want to define layers
+
+Developing an API locally may have a different interface than when it's deployed into production. Layering on security as we deploy allows us to define security in different ways and build different definitions at build time. This makes it easier to develop and test.
+
+Additionally, there are many `description` fields in the OpenAPI specification. People may decide to write the Markdown for those separate files and pull them in at build or deploy time.
+
+### We want localization
+
+Similarly, people may want to add localization to their OpenAPI definition. Instead of adding localization to the OpenAPI specification, people could pass in different languages to build separate final OpenAPI definitions.
+
+### We want base definitions
+
+Sometimes we want to add certain status codes to every response in an OpenAPI definition. This happens for error codes that all return the same error format.
+
+### We want safety
+
+The Python implementation of YAML has a function called `safe_load`. This is because [YAML is inherently unsafe](https://www.arp242.net/yaml-config.html). It's not safe either to accept arbitrary code. We add functions in YAML for this reason.

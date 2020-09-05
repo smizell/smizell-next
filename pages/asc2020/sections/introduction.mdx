@@ -1,0 +1,152 @@
+# Introduction
+
+Geneva is a library that allows you to put code into YAML or JSON. It lets you call functions and define and reference variables.
+
+Here's an example to get us started.
+
+```yaml:geneva-eval
+answer_to_question:
+  fn:add: [40, 2]
+colors:
+  fn:join:
+  - ", "
+  - [blue, yellow, green]
+```
+
+I created an object with two keys, `answer_to_question` and `colors` and called functions to create their values. I prefixed function calls with `fn:` and passed an array of values to the function.
+
+Geneva makes every function of Ramda and Ramda Adjunct available, along with JSON Path Plus and another tool of my own called Saunter.
+
+## Why would you do this to us, Stephen?
+
+Now I'll be the first to admit that it sounds like a bad idea to put code in YAML. Developers don't want to write code in a serialization format. Non-developers don't want to learn to write code in their API definitions. It feels like a lose-lose situation.
+
+However, this isn't new. People are putting in code in their YAML everywhere you look. Let me show a few examples—not to point out anyone is wrong, but to show that we've resigned to this approach.
+
+### AWS does it
+
+AWS CloudFormation has what they call [Intrinsic Functions](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference.html) that people can use in their templates. Here is an example of their [join command](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-join.html).
+
+```yaml
+!Join
+  - ''
+  - - 'arn:'
+    - !Ref AWS::Partition
+    - ':s3:::elasticbeanstalk-*-'
+    - !Ref 'AWS::AccountId'
+```
+
+We see here a function call with `!Join` and a variable reference with `!Ref`. However, if you've had experience with this, you'll know this is not only tough to read, it's difficult to write and get correct!
+
+Instead of AWS putting it into their specification, what if we had a specification that provided this functionality and could be tested outside the context of AWS' infrastructure?
+
+### Azure does it
+
+Azure Resource Manager (ARM) templates do it. They're better in ways because the code is easier to read. They're worse in ways because the code is all in strings, which makes it harder to write.
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "greeting": {
+            "type": "string",
+            "defaultValue": "Hello"
+        },
+        "name": {
+            "type": "string",
+            "defaultValue": "User"
+        },
+        "numberToFormat": {
+            "type": "int",
+            "defaultValue": 8175133
+        }
+    },
+    "resources": [
+    ],
+    "outputs": {
+        "formatTest": {
+            "type": "string",
+            "value": "[format('{0}, {1}. Formatted number: {2:N0}', parameters('greeting'), parameters('name'), parameters('numberToFormat'))]"
+        }
+    }
+}
+```
+
+ARM templates lets people define parameters to pass into the document, allowing them to generate different outputs depending on the context. This is a common pattern.
+
+This approach is not only about using functions in the YAML. It's about generating different outputs depending on what is passed in.
+
+### GitHub Actions does it
+
+GitHub Actions is a new service, and they have defined a YAML format that allows for expressions. Here we see an example of an `if` expression.
+
+```yaml
+steps:
+  ...
+  - name: The job has failed
+    if: ${{ failure() }}
+```
+
+Like the other formats, they support [many functions](https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions).
+
+### JSON Schema is doing it
+
+JSON Schema has `if`, `then`, `else` support.
+
+```json
+  "type": "object",
+  "properties": {
+    "street_address": {
+      "type": "string"
+    },
+    "country": {
+      "enum": ["United States of America", "Canada"]
+    }
+  },
+  "if": {
+    "properties": { "country": { "const": "United States of America" } }
+  },
+  "then": {
+    "properties": { "postal_code": { "pattern": "[0-9]{5}(-[0-9]{4})?" } }
+  },
+  "else": {
+    "properties": { "postal_code": { "pattern": "[A-Z][0-9][A-Z] [0-9][A-Z][0-9]" } }
+  }
+}
+```
+
+### OpenAPI does it
+
+Like JSON Schema, OpenAPI supports a `$ref` keyword as a way to reference other values. It also supports [server variables](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#server-object-example).
+
+```yaml
+servers:
+- url: https://{username}.gigantic-server.com:{port}/{basePath}
+  description: The production API server
+  variables:
+    username:
+      # note! no enum here means it is an open value
+      default: demo
+      description: this value is assigned by the service provider, in this example `gigantic-server.com`
+    port:
+      enum:
+        - '8443'
+        - '443'
+      default: '8443'
+    basePath:
+      # open meaning there is the opportunity to use special base paths as assigned by the provider, default is `v2`
+      default: v2
+```
+
+There's a proposal for [Overlays](https://github.com/OAI/OpenAPI-Specification/blob/master/proposals/004_Overlays.md) on the table
+
+## The past is new again
+
+We went through this same thing with XML. We had XML Schema and XSLT as ways to validate XML and transform XML. We shifted to JSON and later YAML because the XML was overly complex. Now we're back in the same situation, though this time we lack a more formal transformation tool like XSLT.
+
+We aren't required to repeat the past. But since we're already doing it, it would be helpful to pause and look around to make sure we don't set ourselves up for failure.
+
+## Let's imagine for a second
+
+Here's my thinking. Since everyone is doing it their own specific way, why not do it once for everyone? This is how new standards are born, right? Would this make it better or worse to create new specifications? No need to fret about the dynamic parts of a spec. Leave that to something like Geneva.
