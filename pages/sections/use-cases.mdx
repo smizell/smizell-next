@@ -79,7 +79,7 @@ scope:
       en: An event describing that a user just signed up.
   getLocale:
     fn:lambda:
-      - [term]
+      - term
       - fn:path:
           - - ref:term
             - ref:lang
@@ -111,7 +111,7 @@ show:
 scope:
   postResponses:
     fn:lambda:
-      - [responses]
+      - responses
       - fn:mergeDeepLeft:
           - responses:
               "405":
