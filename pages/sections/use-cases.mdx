@@ -73,10 +73,8 @@ show:
 scope:
   lang: en
   locale:
-    getCustomerDescription:
-      en: Get customer
-    createCustomerDescription:
-      en: Create customer
+    userSignedupDescription:
+      en: An event describing that a user just signed up.
   getLocale:
     fn:lambda:
       - [term]
@@ -85,15 +83,16 @@ scope:
             - ref:lang
           - ref:locale
 definition:
-  openapi: 3.0.0
-  paths:
-    /customers:
-      get:
-        description:
-          fn:getLocale: getCustomerDescription
-      post:
-        description:
-          fn:getLocale: createCustomerDescription
+  asyncapi: "2.0.0"
+  info:
+    title: Example
+    version: 0.1.0
+  channels:
+    user/signedup:
+      subscribe:
+        message:
+          description:
+            fn:getLocale: userSignedupDescription
 ```
 
 ### We want base definitions
