@@ -1,6 +1,6 @@
 import YAML from "yaml";
 import { useState } from "react";
-import { Geneva } from "geneva";
+import { Geneva, SimpleFS } from "geneva";
 import RenderCode from "@/components/render-code";
 import YAMLEditor from "@/components/yaml-editor";
 

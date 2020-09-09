@@ -1,16 +1,20 @@
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
+import Link from "next/link";
+import { Box } from "@chakra-ui/core";
 
 export default function Home() {
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
-        <title>Personal Site of Stephen Mizell</title>
+        <title>Stephen Mizell's Presentations</title>
       </Head>
 
-      <main className={styles.main}>
-        <h1>Hi, Stephen Mizell</h1>
-        <p>Welcome to my personal website.</p>
+      <main>
+        <h1>Hi, I'm Stephen Mizell</h1>
+        <p>This is just a placeholder for now.</p>
+        <Box>
+          <Link href="/asc2020/">ASC 2020 Presentation</Link>
+        </Box>
       </main>
     </div>
   );

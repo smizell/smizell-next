@@ -8,7 +8,6 @@ body {
 
 a {
   color: inherit;
-  text-decoration: none;
 }
 
 * {
@@ -16,8 +15,8 @@ a {
 }
 
 main {
-  width: 50%;
-  margin: 0 auto;
+  max-width: 650px;
+  margin: 40px auto 80px;
 }
 
 .code-title {
@@ -26,6 +25,7 @@ main {
   font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
+  font-size: 85%;
 }
 
 .code-title + pre {
