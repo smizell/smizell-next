@@ -1,10 +1,12 @@
+import Link from "next/link";
+
 # Use cases for making things more dynamic
 
-## Why would we do this?
+We have a lot of dynamic things we want to do in our API definitions. I want to look at use cases and examples that show how one might use Geneva to solve them.
 
-### We want reusability
+## We want reusability
 
-We add keywords like `$ref` to specifications to help people make things reusable. We want to define once and reuse all over.
+As noted, we've added keywords like `$ref` to specifications to help people make things reusable. We want to define once and reuse all over. Geneva does this by way of `ref:`.
 
 ```yaml:geneva-context
 show:
@@ -38,7 +40,7 @@ definition:
       $ref: ref:customerRef
 ```
 
-### We want to compose files together
+## We want to compose files together
 
 Left untended, YAML documents grow in complexity and size. It's not easy to read or edit a 10,000 line YAML document. The next step is to break files like this into multiple files.
 
@@ -61,7 +63,7 @@ definition:
 
 Imagine including Markdown files that technical writers put together. Or security definitions managed by the security team. Or operations defined in a separate file.
 
-### We want localization
+## We want localization
 
 Similarly, people may want to add localization to their OpenAPI definition. Instead of adding localization to the OpenAPI specification, people could pass in different languages to build separate final OpenAPI definitions.
 
@@ -95,7 +97,9 @@ definition:
             fn:getLocale: userSignedupDescription
 ```
 
-### We want base definitions
+If you look, you'll see that I use `fn:lambda`, which is a function definition. I'm making my own function to use throughout my definition. I'll let you decide if this is a great or horrible idea.
+
+## We want base definitions
 
 Sometimes we want to add certain status codes to every response in an OpenAPI definition. This happens for error codes that all return the same error format.
 
@@ -128,6 +132,8 @@ definition:
                 "application/json": {}
 ```
 
-### We want safety
+## We want safety
 
 The Python implementation of YAML has a function called `safe_load`. This is because [YAML is inherently unsafe](https://www.arp242.net/yaml-config.html). It's not safe either to accept arbitrary code. We add functions in YAML for this reason.
+
+<Link href="/sections/closing-thoughts/">Next: Closing thoughts</Link>

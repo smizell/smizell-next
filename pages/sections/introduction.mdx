@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 # Introduction
 
 Geneva is a library that allows you to put code into YAML or JSON. It lets you call functions and define and reference variables.
@@ -8,9 +10,16 @@ Here's an example to get us started.
 fn:add: [40, 2]
 ```
 
-This YAML calls an `add` function and passes in two arguments, `40` and `2`. Gevena knows it's a function call because it's prefixed with `fn:`.
+This YAML calls an `add` function and passes in two arguments, `40` and `2`.
 
-Geneva makes every function of Ramda and Ramda Adjunct available, along with JSON Path and another tool of my own called Saunter.
+The rules for Geneva are this.
+
+1. A key prefixed with `fn:` is a function call, and the value is what is passed to that function. To pass in multiple arguments, use an array.
+2. Any string prefixed with `ref:` is a reference to a value in the current context. An example might look like `ref:fullName` where `fullName` is the name of the variable.
+
+That's it. You're an expert now.
+
+Geneva makes many functions available to use. Every function from [Ramda](https://ramdajs.com/) and [Ramda Adjunct](https://char0n.github.io/ramda-adjunct/2.27.0/) is there, along with [JSON Path](https://www.npmjs.com/package/jsonpath) and my own tool called [Saunter](https://www.npmjs.com/package/saunter).
 
 ## Why would you do this to us, Stephen?
 
@@ -20,7 +29,7 @@ However, this isn't new. People are putting in code in their YAML everywhere you
 
 ### AWS does it
 
-AWS CloudFormation has what they call [Intrinsic Functions](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference.html) that people can use in their templates. Here is an example of their [join command](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-join.html).
+[AWS CloudFormation](https://aws.amazon.com/cloudformation/) has what they call [Intrinsic Functions](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference.html) that people can use in their templates. Here is an example of their [join command](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-join.html).
 
 ```yaml
 !Join
@@ -33,11 +42,11 @@ AWS CloudFormation has what they call [Intrinsic Functions](https://docs.aws.ama
 
 We see here a function call with `!Join` and a variable reference with `!Ref`. However, if you've had experience with this, you'll know this is not only tough to read, it's difficult to write and get correct!
 
-Instead of AWS putting it into their specification, what if we had a specification that provided this functionality and could be tested outside the context of AWS' infrastructure?
+AWS is not shy about calling this "infrastructure as code," or we could say, "infrastructure as YAML."
 
 ### Azure does it
 
-Azure Resource Manager (ARM) templates do it. They're better in ways because the code is easier to read. They're worse in ways because the code is all in strings, which makes it harder to write.
+[Azure Resource Manager](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/overview) (ARM) templates do it. They're better in ways because the code is easier to read. They're worse in ways because the code is all in strings, which makes it harder to write.
 
 ```json
 {
@@ -69,11 +78,11 @@ Azure Resource Manager (ARM) templates do it. They're better in ways because the
 
 ARM templates lets people define parameters to pass into the document, allowing them to generate different outputs depending on the context. This is a common pattern.
 
-This approach is not only about using functions in the YAML. It's about generating different outputs depending on what is passed in.
+This approach is not only about using functions in the YAML. It's about generating different builds and outputs depending on what is passed in.
 
 ### GitHub Actions does it
 
-GitHub Actions is a new service, and they have defined a YAML format that allows for expressions. Here we see an example of an `if` expression.
+[GitHub Actions](https://github.com/features/actions) is a new service, and they have defined a YAML format that allows for expressions. Here we see an example of an `if` expression.
 
 ```yaml
 steps:
@@ -84,9 +93,9 @@ steps:
 
 Like the other formats, they support [many functions](https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions).
 
-### JSON Schema is doing it
+### JSON Schema does it
 
-JSON Schema has `if`, `then`, `else` support.
+[JSON Schema](https://json-schema.org/) has `if`, `then`, `else` support.
 
 ```json
   "type": "object",
@@ -110,9 +119,9 @@ JSON Schema has `if`, `then`, `else` support.
 }
 ```
 
-### OpenAPI does it
+### OpenAPI and AsyncAPI do it
 
-Like JSON Schema, OpenAPI supports a `$ref` keyword as a way to reference other values. It also supports [server variables](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#server-object-example).
+Like JSON Schema, OpenAPI and AsyncAPI support a `$ref` keyword as a way to reference other values. It also supports [server variables](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#server-object-example).
 
 ```yaml
 servers:
@@ -133,14 +142,24 @@ servers:
         default: v2
 ```
 
-There's a proposal for [Overlays](https://github.com/OAI/OpenAPI-Specification/blob/master/proposals/004_Overlays.md) on the table
+There's also a proposal for [Overlays](https://github.com/OAI/OpenAPI-Specification/blob/master/proposals/004_Overlays.md) on the table that creates a code-like specification. People have expressed their need for dynamic features.
+
+## See, everyone else is doing it!
+
+Yes, this idea is trending, but it doesn't mean it's a good idea. For instance, it seems that AWS has decided code in a programming language would be better than YAML. They created [CDK](https://aws.amazon.com/cdk/) to let people write code that converted into the more complex YAML you saw in the example.
+
+But code in YAML or code as YAML points to a desire to go beyond static definitions. Pragmatically, it's the way we're going.
 
 ## The past is new again
 
-We went through this same thing with XML. We had XML Schema and XSLT as ways to validate XML and transform XML. We shifted to JSON and later YAML because the XML was overly complex. Now we're back in the same situation, though this time we lack a more formal transformation tool like XSLT.
+It's worth repeating that history repeats itself. It feels like we don't have a choice in the matter.
 
-We aren't required to repeat the past. But since we're already doing it, it would be helpful to pause and look around to make sure we don't set ourselves up for failure.
+We went through this same thing with XML, though more standardized. We had XML Schema and XSLT as ways to validate XML and transform XML. We shifted to JSON and later YAML because we felt XML was overly complex. Now we're back in the same situation with JSON and JSON Schema, though we lack a more formal transformation tool like XSLT—which could be good or bad.
 
 ## Let's imagine for a second
 
-Here's my thinking. Since everyone is doing it their own specific way, why not do it once for everyone? This is how new standards are born, right? Would this make it better or worse to create new specifications? No need to fret about the dynamic parts of a spec. Leave that to something like Geneva.
+Since we resigned to follow this path, and since everyone is doing it their own specific way, why not do it once for everyone? This is how new standards are born, right?
+
+The pattern would be, create simple specifications and let a complex specification or tool like Geneva handle the heavy lifting.
+
+<Link href="/sections/use-cases/">Next: Use cases</Link>
