@@ -12,6 +12,7 @@
     "@mdx-js/react": "^1.6.16",
     "@next/mdx": "^9.5.2",
     "ace-builds": "^1.4.12",
+    "geneva": "^1.4.0",
     "mdx-prism": "^0.3.1",
     "next": "9.5.2",
     "next-mdx-enhanced": "^4.0.0",

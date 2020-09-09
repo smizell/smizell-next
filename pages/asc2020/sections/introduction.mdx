@@ -5,21 +5,16 @@ Geneva is a library that allows you to put code into YAML or JSON. It lets you c
 Here's an example to get us started.
 
 ```yaml:geneva-eval
-answer_to_question:
-  fn:add: [40, 2]
-colors:
-  fn:join:
-  - ", "
-  - [blue, yellow, green]
+fn:add: [40, 2]
 ```
 
-I created an object with two keys, `answer_to_question` and `colors` and called functions to create their values. I prefixed function calls with `fn:` and passed an array of values to the function.
+This YAML calls an `add` function and passes in two arguments, `40` and `2`. Gevena knows it's a function call because it's prefixed with `fn:`.
 
-Geneva makes every function of Ramda and Ramda Adjunct available, along with JSON Path Plus and another tool of my own called Saunter.
+Geneva makes every function of Ramda and Ramda Adjunct available, along with JSON Path and another tool of my own called Saunter.
 
 ## Why would you do this to us, Stephen?
 
-Now I'll be the first to admit that it sounds like a bad idea to put code in YAML. Developers don't want to write code in a serialization format. Non-developers don't want to learn to write code in their API definitions. It feels like a lose-lose situation.
+Now I'll be the first to admit that it sounds like a bad idea to put code like this in YAML. Developers don't want to write code in a serialization format. Non-developers don't want to learn to write code in their API definitions. It feels like a lose-lose situation.
 
 However, this isn't new. People are putting in code in their YAML everywhere you look. Let me show a few examples—not to point out anyone is wrong, but to show that we've resigned to this approach.
 
@@ -29,11 +24,11 @@ AWS CloudFormation has what they call [Intrinsic Functions](https://docs.aws.ama
 
 ```yaml
 !Join
-  - ''
-  - - 'arn:'
-    - !Ref AWS::Partition
-    - ':s3:::elasticbeanstalk-*-'
-    - !Ref 'AWS::AccountId'
+- ""
+- - "arn:"
+  - !Ref AWS::Partition
+  - ":s3:::elasticbeanstalk-*-"
+  - !Ref "AWS::AccountId"
 ```
 
 We see here a function call with `!Join` and a variable reference with `!Ref`. However, if you've had experience with this, you'll know this is not only tough to read, it's difficult to write and get correct!
@@ -46,30 +41,29 @@ Azure Resource Manager (ARM) templates do it. They're better in ways because the
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "greeting": {
-            "type": "string",
-            "defaultValue": "Hello"
-        },
-        "name": {
-            "type": "string",
-            "defaultValue": "User"
-        },
-        "numberToFormat": {
-            "type": "int",
-            "defaultValue": 8175133
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "greeting": {
+      "type": "string",
+      "defaultValue": "Hello"
     },
-    "resources": [
-    ],
-    "outputs": {
-        "formatTest": {
-            "type": "string",
-            "value": "[format('{0}, {1}. Formatted number: {2:N0}', parameters('greeting'), parameters('name'), parameters('numberToFormat'))]"
-        }
+    "name": {
+      "type": "string",
+      "defaultValue": "User"
+    },
+    "numberToFormat": {
+      "type": "int",
+      "defaultValue": 8175133
     }
+  },
+  "resources": [],
+  "outputs": {
+    "formatTest": {
+      "type": "string",
+      "value": "[format('{0}, {1}. Formatted number: {2:N0}', parameters('greeting'), parameters('name'), parameters('numberToFormat'))]"
+    }
+  }
 }
 ```
 
@@ -122,21 +116,21 @@ Like JSON Schema, OpenAPI supports a `$ref` keyword as a way to reference other 
 
 ```yaml
 servers:
-- url: https://{username}.gigantic-server.com:{port}/{basePath}
-  description: The production API server
-  variables:
-    username:
-      # note! no enum here means it is an open value
-      default: demo
-      description: this value is assigned by the service provider, in this example `gigantic-server.com`
-    port:
-      enum:
-        - '8443'
-        - '443'
-      default: '8443'
-    basePath:
-      # open meaning there is the opportunity to use special base paths as assigned by the provider, default is `v2`
-      default: v2
+  - url: https://{username}.gigantic-server.com:{port}/{basePath}
+    description: The production API server
+    variables:
+      username:
+        # note! no enum here means it is an open value
+        default: demo
+        description: this value is assigned by the service provider, in this example `gigantic-server.com`
+      port:
+        enum:
+          - "8443"
+          - "443"
+        default: "8443"
+      basePath:
+        # open meaning there is the opportunity to use special base paths as assigned by the provider, default is `v2`
+        default: v2
 ```
 
 There's a proposal for [Overlays](https://github.com/OAI/OpenAPI-Specification/blob/master/proposals/004_Overlays.md) on the table

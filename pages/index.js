@@ -5,12 +5,12 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Stephen Mizell</title>
+        <title>Personal Site of Stephen Mizell</title>
       </Head>
 
       <main className={styles.main}>
-        <h1>Stephen Mizell</h1>
-        <p>Hi, I'm Stephen. This is my personal homepage.</p>
+        <h1>Hi, Stephen Mizell</h1>
+        <p>Welcome to my personal website.</p>
       </main>
     </div>
   );

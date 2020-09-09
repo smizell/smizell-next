@@ -1,20 +1,25 @@
-import Code from "@/components/code";
+import { useState } from "react";
 import { Geneva } from "geneva";
 import YAML from "yaml";
+import RenderCode from "@/components/render-code";
+import YAMLEditor from "@/components/yaml-editor";
 
-export default function GenevaEval({ children, title = "results" }) {
-  console.log(children);
-  const code = YAML.parse(children.trim());
+export default function EvalGeneva({ children }) {
+  const [definition, setDefinition] = useState(YAML.parse(children.trim()));
   const geneva = new Geneva();
-  const result = YAML.stringify(geneva.run(code));
+  const result = YAML.stringify(geneva.run(definition));
+
   return (
     <>
-      <Code language="yaml" title="code">
-        {children}
-      </Code>
-      <Code language="yaml" title={title}>
+      <YAMLEditor
+        onEdit={(newDefinition) => setDefinition(newDefinition)}
+        title="definition"
+      >
+        {definition}
+      </YAMLEditor>
+      <RenderCode className="language-yaml" title="result">
         {result}
-      </Code>
+      </RenderCode>
     </>
   );
 }

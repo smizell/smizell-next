@@ -6,9 +6,23 @@
 
 We add keywords like `$ref` to specifications to help people make things reusable. We want to define once and reuse all over.
 
-### We want variables for different contexts
+```yaml:geneva-context
+show:
+  scope: true
+  definition: true
+  result: true
+scope:
+  info:
+    contact:
+      name: API Support
+      url: http://www.example.com/support
+      email: support@example.com
+definition:
+  openapi: 3.0.0
+  info: ref:info
+```
 
-Sometimes we want to generate one API definition for our internal teams and another for outside vendors. Other times we might want to generate one for staging and one for production.
+This differs from `$ref` that we find in OpenAPI and JSON Schema. The `ref` here is referencing a variable in the current scope. Geneva lets you define variables and reuse them through the entire definition. This means Geneva's `ref` and `$ref` can be used together.
 
 ```yaml:geneva-context
 show:
@@ -16,11 +30,12 @@ show:
   definition: true
   result: true
 scope:
-  name: "Stephen Mizell"
+  customerRef: https://example.com/customer.yml
 definition:
-  greeting:
-    fn:template: |
-      Hello, {{name}}
+  openapi: 3.0.0
+  components:
+    Customer:
+      $ref: ref:customerRef
 ```
 
 ### We want to compose files together
@@ -44,19 +59,75 @@ definition:
     fn:include: "infoFile"
 ```
 
-### We want to define layers
-
-Developing an API locally may have a different interface than when it's deployed into production. Layering on security as we deploy allows us to define security in different ways and build different definitions at build time. This makes it easier to develop and test.
-
-Additionally, there are many `description` fields in the OpenAPI specification. People may decide to write the Markdown for those separate files and pull them in at build or deploy time.
+Imagine including Markdown files that technical writers put together. Or security definitions managed by the security team. Or operations defined in a separate file.
 
 ### We want localization
 
 Similarly, people may want to add localization to their OpenAPI definition. Instead of adding localization to the OpenAPI specification, people could pass in different languages to build separate final OpenAPI definitions.
 
+```yaml:geneva-context
+show:
+  scope: true
+  definition: true
+  result: true
+scope:
+  lang: en
+  locale:
+    getCustomerDescription:
+      en: Get customer
+    createCustomerDescription:
+      en: Create customer
+  getLocale:
+    fn:lambda:
+      - [term]
+      - fn:path:
+          - - ref:term
+            - ref:lang
+          - ref:locale
+definition:
+  openapi: 3.0.0
+  paths:
+    /customers:
+      get:
+        description:
+          fn:getLocale: getCustomerDescription
+      post:
+        description:
+          fn:getLocale: createCustomerDescription
+```
+
 ### We want base definitions
 
 Sometimes we want to add certain status codes to every response in an OpenAPI definition. This happens for error codes that all return the same error format.
+
+```yaml:geneva-context
+show:
+  scope: true
+  definition: true
+  result: true
+scope:
+  postResponses:
+    fn:lambda:
+      - [responses]
+      - fn:mergeDeepLeft:
+          - responses:
+              "405":
+                description: Method Not Allowed
+                content:
+                  "application/json": {}
+          - ref:responses
+definition:
+  openapi: 3.0.0
+  paths:
+    /customers:
+      post:
+        fn:postResponses:
+          responses:
+            "200":
+              description: Customer added
+              content:
+                "application/json": {}
+```
 
 ### We want safety
 
