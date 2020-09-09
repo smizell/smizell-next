@@ -1,3 +1,13 @@
+import Navigation from "@/components/navigation";
+
 export default function Index({ children }) {
-  return <main>{children}</main>;
+  return (
+    <>
+      <main>
+        <Navigation />
+        {children}
+      </main>
+      ;
+    </>
+  );
 }

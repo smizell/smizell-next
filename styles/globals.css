@@ -19,6 +19,14 @@ main {
   margin: 40px auto 80px;
 }
 
+nav {
+  margin-bottom: 50px;
+}
+
+nav a {
+  padding-right: 20px;
+}
+
 .code-title {
   padding: 0.8em 1em;
   background-color: #eee;
