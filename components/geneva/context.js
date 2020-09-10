@@ -1,13 +1,25 @@
+import dynamic from "next/dynamic";
 import YAML from "yaml";
 import { useState } from "react";
 import { Geneva, SimpleFS } from "geneva";
 import RenderCode from "@/components/render-code";
-import YAMLEditor from "@/components/yaml-editor";
+
+const YAMLEditor = dynamic(() => import("@/components/yaml-editor"));
 
 export default function ContextGeneva({ children }) {
   const context = YAML.parse(children.trim());
   const show = context.show || {};
-  const [scope, setScope] = useState(context.scope);
+
+  let scopeObj, scopeTxt;
+
+  if (typeof context.scope === "string") {
+    scopeObj = YAML.parse(context.scope);
+    scopeTxt = context.scope;
+  } else {
+    scopeObj = context.scope;
+  }
+
+  const [scope, setScope] = useState(scopeObj);
   const [definition, setDefinition] = useState(context.definition);
   const [files, setFiles] = useState(context.files);
 
@@ -25,7 +37,11 @@ export default function ContextGeneva({ children }) {
   return (
     <>
       {show.scope && (
-        <YAMLEditor onEdit={(newScope) => setScope(newScope)} title="variables">
+        <YAMLEditor
+          onEdit={(newScope) => setScope(newScope)}
+          title="variables"
+          txt={scopeTxt}
+        >
           {scope}
         </YAMLEditor>
       )}

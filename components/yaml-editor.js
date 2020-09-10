@@ -8,9 +8,10 @@ import { Box, Button, Text } from "@chakra-ui/core";
 require("ace-builds/src-noconflict/mode-yaml");
 require("ace-builds/src-noconflict/theme-tomorrow");
 
-export default function YAMLEditor({ children, onEdit, title }) {
+export default function YAMLEditor({ children, onEdit, title, txt }) {
+  const initialValue = txt !== undefined ? txt : YAML.stringify(children);
   const [editing, setEdit] = useState(false);
-  const [value, setValue] = useState(YAML.stringify(children));
+  const [value, setValue] = useState(initialValue);
 
   return (
     <>

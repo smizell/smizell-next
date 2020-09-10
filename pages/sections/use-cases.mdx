@@ -1,4 +1,4 @@
-import Link from "next/link";
+import SectionLink from "@/components/section-link";
 
 # Use cases for making things more dynamic
 
@@ -32,13 +32,17 @@ show:
   definition: true
   result: true
 scope:
-  customerRef: https://example.com/customer.yml
+  schemas:
+    customer:
+      $ref: https://example.com/customer.yml
 definition:
   openapi: 3.0.0
   components:
-    Customer:
-      $ref: ref:customerRef
+    schemas:
+      Customer: ref:schemas.customer
 ```
+
+This could be a way to pass in different schemas for different builds.
 
 ## We want to compose files together
 
@@ -72,7 +76,7 @@ show:
   scope: true
   definition: true
   result: true
-scope:
+scope: |
   lang: en
   locale:
     userSignedupDescription:
@@ -81,8 +85,7 @@ scope:
     fn:lambda:
       - term
       - fn:path:
-          - - ref:term
-            - ref:lang
+          - [ref:term, ref:lang]
           - ref:locale
 definition:
   asyncapi: "2.0.0"
@@ -136,4 +139,4 @@ definition:
 
 The Python implementation of YAML has a function called `safe_load`. This is because [YAML is inherently unsafe](https://www.arp242.net/yaml-config.html). It's not safe either to accept arbitrary code. We add functions in YAML for this reason.
 
-<Link href="/sections/closing-thoughts/">Next: Closing thoughts</Link>
+<SectionLink sectionName="closingThoughts">Next: Closing thoughts</SectionLink>

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import SectionLink from "@/components/section-link";
 
 # Introduction
 
@@ -25,7 +25,7 @@ Geneva makes many functions available to use. Every function from [Ramda](https:
 
 Now I'll be the first to admit that it sounds like a bad idea to put code like this in YAML. Developers don't want to write code in a serialization format. Non-developers don't want to learn to write code in their API definitions. It feels like a lose-lose situation.
 
-However, this isn't new. People are putting in code in their YAML everywhere you look. Let me show a few examples—not to point out anyone is wrong, but to show that we've resigned to this approach.
+However, this isn't new. People are putting in code in their YAML everywhere you look. Let me show a few examples—not to point out anyone is wrong, but to show that we've chosen this approach.
 
 ### AWS does it
 
@@ -42,7 +42,7 @@ However, this isn't new. People are putting in code in their YAML everywhere you
 
 We see here a function call with `!Join` and a variable reference with `!Ref`. However, if you've had experience with this, you'll know this is not only tough to read, it's difficult to write and get correct!
 
-AWS is not shy about calling this "infrastructure as code," or we could say, "infrastructure as YAML."
+AWS is not shy about calling this "infrastructure as code" even though it's YAML.
 
 ### Azure does it
 
@@ -142,19 +142,17 @@ servers:
         default: v2
 ```
 
-There's also a proposal for [Overlays](https://github.com/OAI/OpenAPI-Specification/blob/master/proposals/004_Overlays.md) on the table that creates a code-like specification. People have expressed their need for dynamic features.
+There's also a proposal for [Overlays](https://github.com/OAI/OpenAPI-Specification/blob/master/proposals/004_Overlays.md) on the table that creates a code-like specification. People have expressed their desire for dynamic features.
 
 ## See, everyone else is doing it!
 
-Yes, this idea is trending, but it doesn't mean it's a good idea. For instance, it seems that AWS has decided code in a programming language would be better than YAML. They created [CDK](https://aws.amazon.com/cdk/) to let people write code that converted into the more complex YAML you saw in the example.
+Have you ever thought about how much the software world is built on YAML? AWS, Azure, Google Cloud use it for defining infrastructure. Kubernetes uses it for orchestration. Docker Compose uses it for containers. On and on. The world runs on YAML!
 
-But code in YAML or code as YAML points to a desire to go beyond static definitions. Pragmatically, it's the way we're going.
+It seems that AWS has decided code in a programming language would be better than YAML. They created [CDK](https://aws.amazon.com/cdk/) to let people write code that converted into the more complex YAML you saw in the example.
 
 ## The past is new again
 
-It's worth repeating that history repeats itself. It feels like we don't have a choice in the matter.
-
-We went through this same thing with XML, though more standardized. We had XML Schema and XSLT as ways to validate XML and transform XML. We shifted to JSON and later YAML because we felt XML was overly complex. Now we're back in the same situation with JSON and JSON Schema, though we lack a more formal transformation tool like XSLT—which could be good or bad.
+We've been here before with XML. We had XML Schema and XSLT as ways to validate XML and transform XML. We shifted to JSON and later YAML because we felt XML was overly complex. Now we're back in the same situation with JSON and JSON Schema, though we lack a more formal transformation tool like XSLT—which could be good or bad.
 
 ## Let's imagine for a second
 
@@ -162,4 +160,4 @@ Since we resigned to follow this path, and since everyone is doing it their own 
 
 The pattern would be, create simple specifications and let a complex specification or tool like Geneva handle the heavy lifting.
 
-<Link href="/sections/use-cases/">Next: Use cases</Link>
+<SectionLink sectionName="useCases">Next: Uses cases</SectionLink>
