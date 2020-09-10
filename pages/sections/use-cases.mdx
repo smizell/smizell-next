@@ -26,7 +26,7 @@ definition:
   info: ref:info
 ```
 
-This differs from `$ref` that we find in OpenAPI and JSON Schema. The `ref` here is referencing a variable in the current scope. Geneva lets you define variables and reuse them through the entire definition. This means Geneva's `ref` and `$ref` can be used together.
+This differs from `$ref` that we find in OpenAPI and JSON Schema. The `ref` here is referencing a variable in the current scope. Geneva lets you define variables and reuse them through the entire definition. This means Geneva's `ref` and `$ref` could be used together.
 
 ```yaml:geneva-context
 show:
@@ -48,9 +48,9 @@ This could be a way to pass in different schemas for different builds.
 
 ## We want to compose files together
 
-Left untended, YAML documents grow in complexity and size. It's not easy to read or edit a 10,000 line YAML document. The next step is to break files like this into multiple files.
+Left untended, YAML documents grow in complexity and size. It's not easy to read or edit a 2,000 line YAML document. The next step is to break files like this into multiple files.
 
-Here is create a mock file system that I reference in the definition. Geneva allows for passing in the normal file system modules, though this might not be safe.
+Here I create a mock file system that I reference in the definition. Geneva allows for passing in the normal file system modules, too, though this might not be safe.
 
 ```yaml:geneva-context
 show:
@@ -69,7 +69,7 @@ definition:
     fn:include: infoFile
 ```
 
-Imagine including Markdown files that technical writers put together. Or adding in security definitions managed by the security team. Or pulling in operations defined in a separate file.
+Imagine including Markdown files that technical writers put together. Or adding in security definitions managed by the security team. Or pulling in operations defined in a separate file. You could include many different kinds of files without bloating a specification with that functionality.
 
 ## We want localization
 
