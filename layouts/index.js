@@ -14,10 +14,13 @@ export default function Index({ children, frontMatter }) {
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:creator" content="@Stephen_Mizell" />
         <meta name="og:url" content="https://present.smizell.com/" />
-        <meta name="og:title" content="Stephen Mizell" />
+        <meta
+          name="og:title"
+          content="Making OpenAPI and AsyncAPI Dynamic with Geneva"
+        />
         <meta
           name="og:description"
-          content="Making OpenAPI and AsyncAPI Dynamic with Geneva, ASC 2020"
+          content="Presentation website by Stephen Mizell for session at ASC2020"
         />
       </Head>
       <main>
