@@ -15,12 +15,14 @@ a {
 }
 
 main {
-  max-width: 650px;
+  max-width: 670px;
   margin: 40px auto 80px;
+  padding: 0 15px;
 }
 
 nav {
   margin-bottom: 50px;
+  line-height: 1.8;
 }
 
 nav a {
