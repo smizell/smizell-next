@@ -1,6 +1,8 @@
-import SectionLink from "@/components/section-link";
+---
+title: Introduction
+---
 
-# Introduction
+import SectionLink from "@/components/section-link";
 
 Geneva is a library that enables you to put code into YAML or JSON. It lets you call functions and define and reference variables there in the data.
 
@@ -152,7 +154,7 @@ But maybe it's changing. AWS has created [CDK](https://aws.amazon.com/cdk/) to l
 
 And there's a company [Pulumi](https://www.pulumi.com/) that banks on the idea of writing infrastructure in programming languages to address the YAML explosion.
 
-Maybe you've heard of the[Configuration Complexity Clock](http://mikehadlow.blogspot.com/2012/05/configuration-complexity-clock.html). 
+Maybe you've heard of the[Configuration Complexity Clock](http://mikehadlow.blogspot.com/2012/05/configuration-complexity-clock.html).
 
 1. People write configurations in real code
 2. Over time, they move toward a general specification
@@ -169,7 +171,7 @@ To add to it, we've been here before with XML. We had XML Schema and XSLT as way
 
 There are upsides to adding dynamic features to a specification. One reason is that it allows people to write logic or take advantage of reusability without installing development environments. A text editor is all you need.
 
-Another reason is for safety. It's a risk to run other people's code in your system. Adding functions into a YAML file gives users freedom with guardrails. 
+Another reason is for safety. It's a risk to run other people's code in your system. Adding functions into a YAML file gives users freedom with guardrails.
 
 As far as Geneva goes, one of the main reasons to think this way is to provide a way to simplify other specifications. Instead of adding these features to every specification, we could keep them all simple and rely on a specification or tool designed to handle the complex parts.
 
