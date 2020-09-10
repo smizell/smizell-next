@@ -11,6 +11,7 @@ export default function Index({ children, frontMatter }) {
           name="description"
           content="Presentation by Stephen Mizell at ASC2020 on a tool called Geneva"
         />
+        <meta name="twitter:card" content="summary" />
         <meta name="twitter:creator" content="@Stephen_Mizell" />
         <meta name="og:url" content="https://present.smizell.com/" />
         <meta name="og:title" content="Stephen Mizell" />
