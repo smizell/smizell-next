@@ -139,4 +139,25 @@ definition:
                 "application/json": {}
 ```
 
+## We want a way to use templates
+
+We saw where AWS requires people to use a `!Join` function to create strings. Maybe a template would be better.
+
+Geneva provides a `fn:template` function that allows for [mustache templates](https://mustache.github.io/). This is a simple example to show how templates work. You can use mustache features in the template or use other functions of Geneva to create values.
+
+```yaml:geneva-context
+show:
+  scope: true
+  definition: true
+  result: true
+scope:
+  env: dev
+definition:
+  openapi: 3.0.0
+  info:
+    description:
+      fn:template: |
+        This is in the {{env}} environment.
+```
+
 <SectionLink sectionName="closingThoughts">Next: Closing thoughts</SectionLink>
