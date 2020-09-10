@@ -2,7 +2,7 @@ import SectionLink from "@/components/section-link";
 
 # Introduction
 
-Geneva is a library that allows you to put code into YAML or JSON. It lets you call functions and define and reference variables.
+Geneva is a library that enables you to put code into YAML or JSON. It lets you call functions and define and reference variables there in the data.
 
 Here's an example to get us started.
 
@@ -40,9 +40,9 @@ However, this isn't new. People are putting in code in their YAML everywhere you
   - !Ref "AWS::AccountId"
 ```
 
-We see here a function call with `!Join` and a variable reference with `!Ref`. However, if you've had experience with this, you'll know this is not only tough to read, it's difficult to write and get correct!
+We see here a function call with `!Join` and a variable reference with `!Ref`. However, if you've had experience with this, you'll know this is not only tough to read (yikes), it's difficult to write and get correct!
 
-AWS is not shy about calling this "infrastructure as code" even though it's YAML.
+AWS is not shy about calling this "infrastructure as code" even though it's YAML. We're all OK calling this code.
 
 ### Azure does it
 
@@ -142,22 +142,35 @@ servers:
         default: v2
 ```
 
-There's also a proposal for [Overlays](https://github.com/OAI/OpenAPI-Specification/blob/master/proposals/004_Overlays.md) on the table that creates a code-like specification. People have expressed their desire for dynamic features.
+There's also a proposal for [Overlays](https://github.com/OAI/OpenAPI-Specification/blob/master/proposals/004_Overlays.md) on the table that creates a code-like specification.
 
 ## See, everyone else is doing it!
 
-Have you ever thought about how much the software world is built on YAML? AWS, Azure, Google Cloud use it for defining infrastructure. Kubernetes uses it for orchestration. Docker Compose uses it for containers. On and on. The world runs on YAML!
+It's not as wild as it sounds to treat YAML as code. AWS and Azure do it, why can't we?
 
-It seems that AWS has decided code in a programming language would be better than YAML. They created [CDK](https://aws.amazon.com/cdk/) to let people write code that converted into the more complex YAML you saw in the example.
+But maybe it's changing. AWS has created [CDK](https://aws.amazon.com/cdk/) to let people write code in programming languages like Python rather than write YAML.
+
+And there's a company [Pulumi](https://www.pulumi.com/) that banks on the idea of writing infrastructure in programming languages to address the YAML explosion.
+
+Maybe you've heard of the[Configuration Complexity Clock](http://mikehadlow.blogspot.com/2012/05/configuration-complexity-clock.html). 
+
+1. People write configurations in real code
+2. Over time, they move toward a general specification
+3. The specification gets complex and people decide to move to code. Why use a limited language when you can use the real thing?
+4. Repeat
+
+Is the industry is fine with putting code in YAML? Or is there a shift happening?
 
 ## The past is new again
 
-We've been here before with XML. We had XML Schema and XSLT as ways to validate XML and transform XML. We shifted to JSON and later YAML because we felt XML was overly complex. Now we're back in the same situation with JSON and JSON Schema, though we lack a more formal transformation tool like XSLT—which could be good or bad.
+To add to it, we've been here before with XML. We had XML Schema and XSLT as ways to validate XML and transform XML. We shifted to JSON and later YAML because we felt XML was overly complex. Now we're back in the same situation with JSON and JSON Schema, though we lack a more formal transformation tool like XSLT.
 
-## Let's imagine for a second
+## Why do it?
 
-Since we resigned to follow this path, and since everyone is doing it their own specific way, why not do it once for everyone? This is how new standards are born, right?
+There are upsides to adding dynamic features to a specification. One reason is that it allows people to write logic or take advantage of reusability without installing development environments. A text editor is all you need.
 
-The pattern would be, create simple specifications and let a complex specification or tool like Geneva handle the heavy lifting.
+Another reason is for safety. It's a risk to run other people's code in your system. Adding functions into a YAML file gives users freedom with guardrails. 
+
+As far as Geneva goes, one of the main reasons to think this way is to provide a way to simplify other specifications. Instead of adding these features to every specification, we could keep them all simple and rely on a specification or tool designed to handle the complex parts.
 
 <SectionLink sectionName="useCases">Next: Uses cases</SectionLink>
