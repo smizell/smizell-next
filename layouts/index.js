@@ -17,7 +17,7 @@ export default function Index({ children, frontMatter }) {
         <meta name="og:title" content="Stephen Mizell" />
         <meta
           name="og:description"
-          content="Making OpenAPI and AsyncAPI Dynamic with Geneva"
+          content="Making OpenAPI and AsyncAPI Dynamic with Geneva, ASC 2020"
         />
       </Head>
       <main>
