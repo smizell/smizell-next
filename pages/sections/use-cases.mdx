@@ -6,6 +6,15 @@ import SectionLink from "@/components/section-link";
 
 We have a lot of dynamic things we want to do in our API definitions. I want to look at use cases and examples that show how one might use Geneva to solve them.
 
+A few notes about the examples below:
+
+1. The variables are values defined before the definition is executed.
+1. The definition is the code, in a sense
+1. The result is what the code produced when it runs
+1. The examples I show are truncated—they aren't valid or complete OpenAPI or AsyncAPI definitions
+
+Everything but the results are editable. Have fun!
+
 ## We want reusability
 
 As noted, we've added keywords like `$ref` to specifications to help people make things reusable. We want to define once and reuse all over. Geneva does this by way of `ref:`.
